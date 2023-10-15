@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -29,7 +30,9 @@ const formSchema = z.object({
 });
 
 const UsersPage = () => {
+  const router = useRouter();
   const { toast } = useToast();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,10 +52,12 @@ const UsersPage = () => {
       });
 
       toast({
-        variant: "default",
         duration: 3000,
         description: "User successfully created",
       });
+      form.reset();
+      router.refresh();
+      router.push("/");
     } catch (err: any) {
       console.log(err);
       toast({

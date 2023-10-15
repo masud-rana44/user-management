@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import { Pencil, X } from "lucide-react";
+import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { User } from "@prisma/client";
 
@@ -14,8 +14,11 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
+
 import { Button } from "./ui/button";
 import { useToast } from "./ui/use-toast";
+import { ConfirmModal } from "./confirm-modal";
+import { useState } from "react";
 
 interface UsersTableProps {
   data: User[];
@@ -24,9 +27,11 @@ interface UsersTableProps {
 export const UsersTable = ({ data }: UsersTableProps) => {
   const router = useRouter();
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
 
   const onDelete = async (id: string) => {
     try {
+      setIsLoading(true);
       await axios.delete(`/api/users/${id}`);
 
       toast({
@@ -41,6 +46,8 @@ export const UsersTable = ({ data }: UsersTableProps) => {
         duration: 3000,
         title: "Something went wrong.",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -66,19 +73,13 @@ export const UsersTable = ({ data }: UsersTableProps) => {
             <TableCell>{user.gender}</TableCell>
             <TableCell>{user.status}</TableCell>
             <TableCell className="text-left">
-              <Button
-                onClick={() => onDelete(user.id)}
-                size="sm"
-                variant="link"
-                className="text-indigo-700 hover:text-indigo-900"
-              >
-                <X size={18} />
-              </Button>
+              <ConfirmModal id={user.id} onDelete={onDelete} isLoading={isLoading}/>
               <Button
                 onClick={() => router.push(`/users/${user.id}`)}
+                disabled={isLoading}
                 size="sm"
                 variant="link"
-                className="text-indigo-700 hover:text-indigo-900"
+                className="text-violet-700 hover:text-violet-900"
               >
                 <Pencil size={18} />
               </Button>

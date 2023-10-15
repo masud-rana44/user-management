@@ -189,7 +189,7 @@ export const UsersForm = ({ title, description, data }: UsersFormProps) => {
           <Button
             type="submit"
             disabled={isLoading}
-            className="mt-10 block w-full bg-indigo-600 hover:bg-indigo-700"
+            className="mt-10 block w-full bg-violet-600 hover:bg-violet-700"
           >
             {data ? "Update User" : "Add User"}
           </Button>

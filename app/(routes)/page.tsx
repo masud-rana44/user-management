@@ -17,7 +17,7 @@ const HomePage = async () => {
         <Link href="/users">
           <Button
             size="sm"
-            className="mb-4 flex items-center gap-x-1 bg-indigo-600 hover:bg-indigo-700"
+            className="mb-4 flex items-center gap-x-1 bg-violet-600 hover:bg-violet-700"
           >
             <PlusCircle size={18} /> Add User
           </Button>

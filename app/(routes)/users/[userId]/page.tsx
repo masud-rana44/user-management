@@ -22,7 +22,7 @@ const UserIdPage = async ({ params }: { params: { userId: string } }) => {
     <div className="p-6">
       <Link
         href="/"
-        className="mb-10 block text-sm text-indigo-600 hover:underline "
+        className="mb-10 block text-sm text-violet-600 hover:underline "
       >
         {"<< All Users"}
       </Link>

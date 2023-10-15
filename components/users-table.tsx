@@ -1,4 +1,10 @@
+"use client";
+
+import axios from "axios";
+import { Pencil, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { User } from "@prisma/client";
+
 import {
   Table,
   TableBody,
@@ -9,13 +15,35 @@ import {
   TableRow,
 } from "./ui/table";
 import { Button } from "./ui/button";
-import { Pencil, X } from "lucide-react";
+import { useToast } from "./ui/use-toast";
 
 interface UsersTableProps {
   data: User[];
 }
 
 export const UsersTable = ({ data }: UsersTableProps) => {
+  const router = useRouter();
+  const { toast } = useToast();
+
+  const onDelete = async (id: string) => {
+    try {
+      await axios.delete(`/api/users/${id}`);
+
+      toast({
+        duration: 3000,
+        description: "User successfully deleted",
+      });
+      router.refresh();
+    } catch (error: any) {
+      console.log(error);
+      toast({
+        variant: "destructive",
+        duration: 3000,
+        title: "Something went wrong.",
+      });
+    }
+  };
+
   return (
     <Table>
       <TableCaption>List of Users</TableCaption>
@@ -39,6 +67,7 @@ export const UsersTable = ({ data }: UsersTableProps) => {
             <TableCell>{user.status}</TableCell>
             <TableCell className="text-left">
               <Button
+                onClick={() => onDelete(user.id)}
                 size="sm"
                 variant="link"
                 className="text-indigo-700 hover:text-indigo-900"
@@ -46,6 +75,7 @@ export const UsersTable = ({ data }: UsersTableProps) => {
                 <X size={18} />
               </Button>
               <Button
+                onClick={() => router.push(`/users/${user.id}`)}
                 size="sm"
                 variant="link"
                 className="text-indigo-700 hover:text-indigo-900"

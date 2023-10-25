@@ -60,7 +60,7 @@ export const ConfirmModal = ({
             onClick={() => onDelete(id)}
             className="bg-violet-700 hover:bg-violet-800"
           >
-            Continue
+            Delete
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
